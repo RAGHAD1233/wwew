@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Visitor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        body {
+            background-image: url('./image/background.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            color: #fff;
+        }
+        nav {
+            width: 80px;
+            background-color: #00000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            height: 100%;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        nav ul li {
+            font-size: 16px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+        nav ul li a:hover {
+            color:  #e50914;
+        }
+        .Log-out {
+            margin-top: auto;
+            font-size: 16px;
+            cursor: pointer;
+            color: #fff;
+            background-color: transparent;
+            border: none;
+        }
+        .search-container {
+            text-align: center;
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+        input[type="text"] {
+            font-size: 24px;
+            padding: 10px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 24px;
+        }
+        .result-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .result-card {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            color: #fff;
+        }
+        .result-card h3 {
+            color: #b3f8f2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav>
+    <ul>
+        <li><a href="homepage.html">Home</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li><a href="addVisitor.html">Add</a></li>
+    </ul>
+    <button class="Log-out" onclick="logout()">Log-out</button>
+</nav>
+
+<!-- Search Content -->
+<div class="search-container">
+    <h1>Search for a Visitor</h1>
+    <input type="text" id="searchInput" placeholder="Enter visitor name" />
+    <button onclick="searchVisitor()">Search</button>
+    
+    <!-- Result Container for displaying search results -->
+    <div id="searchResult" class="result-container"></div>
+</div>
+
+<script>
+    function searchVisitor() {
+        const searchName = document.getElementById('searchInput').value;
+
+        // إرسال الطلب إلى السيرفر للبحث عن الزوار
+        fetch('http://localhost:3000/search-visitor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: searchName })
+        })
+        .then(response => response.json())
+        .then(result => {
+            const resultContainer = document.getElementById('searchResult');
+            resultContainer.innerHTML = ''; // Clear previous results
+
+            if (result) {
+                // Display visitor details in a card
+                resultContainer.innerHTML = `
+                    <div class="result-card">
+                        <h3>${result.name}</h3>
+                        <p>ID: ${result.id}</p>
+                        <p>Date: ${result.date}</p>
+                        <p>Time: ${result.time}</p>
+                    </div>
+                `;
+            } else {
+                // Display 'not found' message if no result is found
+                resultContainer.innerHTML = `
+                    <div class="result-card">
+                        <p>Visitor not found.</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error searching visitor:', error);
+        });
+    }
+
+    function logout() {
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

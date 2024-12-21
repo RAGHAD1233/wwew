@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Ludiflex | Login</title>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>LOGO .</p>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+        </nav>
+
+        <!----------------------------- Form box ----------------------------------->
+        <div class="form-box">
+            <!------------------- login form -------------------------->
+            <div class="login-container" id="login">
+                <div class="top">
+                    <header>Login</header>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" id="username" placeholder="Username"> <!-- أضف id هنا -->
+                    <i class="bx bx-user"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" class="input-field" id="password" placeholder="Password"> <!-- أضف id هنا -->
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <div class="input-box">
+                    <input type="submit" class="submit" id="loginBtn" value="Log In"> <!-- أضف id هنا -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الحصول على العناصر من DOM
+        const loginBtn = document.getElementById("loginBtn"); // زر تسجيل الدخول
+        const usernameInput = document.getElementById('username'); // حقل اسم المستخدم
+        const passwordInput = document.getElementById('password'); // حقل كلمة المرور
+
+        // قائمة بأسماء المستخدمين والرموز السرية المسموح بها
+        const validUsers = {
+            'admin': 's12345',
+            'HR1': '54321',
+            'HR2': '98765',
+            'HR3': '24680',
+            'Security': '13579'
+        };
+
+        // التحقق من بيانات تسجيل الدخول عند الضغط على زر تسجيل الدخول
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // منع التحديث الافتراضي للصفحة
+
+            // الحصول على القيم المدخلة
+            const username = usernameInput.value.trim(); // إزالة المسافات الزايدة
+            const password = passwordInput.value;
+
+            // التحقق من صحة اسم المستخدم وكلمة المرور
+            if (validUsers[username] && validUsers[username] === password) {
+                // الانتقال إلى الصفحة الرئيسية إذا كانت البيانات صحيحة
+                window.location.href = 'homepage.html'; // استبدل الرابط بالصفحة المطلوبة
+            } else {
+                alert('اسم المستخدم أو كلمة المرور غير صحيحة'); // رسالة خطأ
+            }
+        });
+    </script>
+</body>
+</html>
